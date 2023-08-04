@@ -12,8 +12,6 @@ namespace WebApiTupac.Entities.DTO
         [StringLength(50)]
         public string Apellido { get; set; }
         [Required]
-        public DateTime FechaNacimiento { get; set; }
-        [Required]
         [StringLength(50)]
         public string NombreUsuario { get; set; }
         [Required]
@@ -22,6 +20,7 @@ namespace WebApiTupac.Entities.DTO
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        public ICollection<Cursada> Cursadas { get; }
 
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiTupac.Data;
 
@@ -10,9 +11,11 @@ using WebApiTupac.Data;
 namespace WebApiTupac.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803161841_Cursadas")]
+    partial class Cursadas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,11 +73,11 @@ namespace WebApiTupac.Migrations
 
             modelBuilder.Entity("WebApiTupac.Entities.Materia", b =>
                 {
-                    b.Property<int>("MateriaId")
+                    b.Property<int>("IdMateria")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MateriaId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMateria"));
 
                     b.Property<int>("CarreraId")
                         .HasColumnType("int");
@@ -84,7 +87,7 @@ namespace WebApiTupac.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("MateriaId");
+                    b.HasKey("IdMateria");
 
                     b.HasIndex("CarreraId");
 

@@ -7,7 +7,6 @@ namespace WebApiTupac.Entities
     public class Usuario : IUsuario
     {
         [Key]
-        [Required]
         public int UsuarioId { get; set; }
         [Required]
         [StringLength(50)]
@@ -15,8 +14,6 @@ namespace WebApiTupac.Entities
         [Required]
         [StringLength(50)]
         public string Apellido { get; set; }
-        [Required]
-        public DateTime FechaNacimiento { get; set; }
         [Required]
         [StringLength(50)]
         public string NombreUsuario { get; set; }
@@ -26,5 +23,6 @@ namespace WebApiTupac.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        public ICollection<Cursada> Cursadas { get; set; }
     }
 }

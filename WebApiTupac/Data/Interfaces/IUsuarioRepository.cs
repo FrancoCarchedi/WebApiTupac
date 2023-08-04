@@ -3,13 +3,8 @@ using WebApiTupac.Entities.DTO;
 
 namespace WebApiTupac.Data.Interfaces
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IRepository<UsuarioDTO>
     {
-        Task<IEnumerable<UsuarioDTO>> GetUsuarios();
-        Task<UsuarioDTO> GetUsuarioByID(int usuarioId);
-        Task InsertUsuario(UsuarioDTO usuarioDTO);
-        Task DeleteUsuario(int usuarioId);
-        Task UpdateUsuario(int usuarioId, UsuarioDTO usuario);
-        //void Save();
+        Task ResetPassword(string username, string newPasword);
     }
 }

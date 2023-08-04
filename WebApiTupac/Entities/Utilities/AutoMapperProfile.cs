@@ -8,6 +8,9 @@ namespace WebApiTupac.Entities.Utilities
         public AutoMapperProfile()
         {
             CreateMap<UsuarioDTO, Usuario>().ReverseMap();
+            CreateMap<PasswordUpdateDTO, Usuario>();
+            CreateMap<CarreraDTO, Carrera>().ReverseMap();
+            CreateMap<MateriaDTO, Materia>().ReverseMap();
         }
     }
 }
