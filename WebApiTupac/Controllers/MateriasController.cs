@@ -32,12 +32,12 @@ namespace WebApiTupac.Controllers
             return Ok(materias);
         }
 
-        //Hacer otro get, de todas las materias de una carrera específica
-        //[HttpGet("{carreraId/materias}")]
-        //public async Task<ActionResult<List<MateriaDTO>>> GetByCarrera(int carreraId)
-        //{
-
-        //}
+        [HttpGet("/api/carreras/{carreraId}/materias")]
+        public async Task<ActionResult<List<MateriaDTO>>> GetByCarrera(int carreraId)
+        {
+            var materias = await _materiasRepository.GetByCarrera(carreraId);
+            return Ok(materias);
+        }
 
         [HttpPost]
         public async Task<ActionResult> Insert([FromBody] MateriaDTO materiaDTO)

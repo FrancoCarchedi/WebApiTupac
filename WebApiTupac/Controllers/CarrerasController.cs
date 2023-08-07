@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApiTupac.Data;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
 using WebApiTupac.Entities.DTO;
@@ -11,9 +11,11 @@ namespace WebApiTupac.Controllers
     public class CarrerasController : ControllerBase
     {
         private readonly ICarreraRepository _carrerasRepository;
-        public CarrerasController(ICarreraRepository carreraRepository)
+        private readonly IMapper _mapper;
+        public CarrerasController(ICarreraRepository carreraRepository, IMapper mapper)
         {
             _carrerasRepository = carreraRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id:int}")]
@@ -31,25 +33,31 @@ namespace WebApiTupac.Controllers
         public async Task<ActionResult<List<CarreraDTO>>> Get()
         {
             var carreras = await _carrerasRepository.GetAll();
-            return Ok(carreras);
+            var carrerasDTO = _mapper.Map<IEnumerable<CarreraDTO>>(carreras);
+            return Ok(carrerasDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert([FromBody] CarreraDTO carreraDTO)
+        public async Task<ActionResult> Insert([FromBody] CarreraCreacionDTO carreraCreacionDTO)
         {
-            await _carrerasRepository.Insert(carreraDTO);
+            Carrera carrera = _mapper.Map<Carrera>(carreraCreacionDTO);
+            await _carrerasRepository.Insert(carrera);
             return Ok("La carrera se ha insertado correctamente.");
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int carreraId, CarreraDTO carrera)
+        public async Task<ActionResult> Update(CarreraCreacionDTO carreraDTO, int id)
         {
-            var existe = await _carrerasRepository.GetById(carreraId);
+            var existe = await _carrerasRepository.GetById(id);
             if (existe == null)
             {
                 return NotFound("La carrera a editar no se encuentra");
             }
-            await _carrerasRepository.Update(carreraId, carrera);
+
+            existe.Nombre = carreraDTO.Nombre;
+            existe.Duracion = carreraDTO.Duracion;
+
+            await _carrerasRepository.Update(id, existe);
             return Ok("Se han actualizado los datos de la carrera");
         }
 

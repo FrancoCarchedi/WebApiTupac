@@ -2,11 +2,13 @@
 
 namespace WebApiTupac.Entities.DTO
 {
-    public class CarreraDTO
+    public class CarreraCreacionDTO
     {
-        public int CarreraId { get; set; }
+        [Required]
+        [StringLength(50)]
         public string Nombre { get; set; }
+        [Required]
+        [Range(1, 6)]
         public int Duracion { get; set; }
-        public ICollection<MateriaDTO> Materias { get; set; }
     }
 }

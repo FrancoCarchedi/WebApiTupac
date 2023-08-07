@@ -11,7 +11,7 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection")));
 builder.Services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
 builder.Services.AddScoped(typeof(ICarreraRepository), typeof(CarreraRepository));
-//builder.Services.AddScoped(typeof(IMateriaRepository), typeof(MateriaRepository));
+builder.Services.AddScoped(typeof(IMateriaRepository), typeof(MateriaRepository));
 //builder.Services.AddScoped(typeof(ICursadaRepository), typeof(CursadaRepository));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

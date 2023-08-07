@@ -1,8 +1,10 @@
-﻿using WebApiTupac.Entities.DTO;
+﻿using WebApiTupac.Entities;
+using WebApiTupac.Entities.DTO;
 
 namespace WebApiTupac.Data.Interfaces
 {
-    public interface ICarreraRepository : IRepository<CarreraDTO>
+    public interface ICarreraRepository : IRepository<Carrera>
     {
+
     }
 }

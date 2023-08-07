@@ -28,6 +28,12 @@ namespace WebApiTupac.Data
             return _mapper.Map<MateriaDTO>(materia);
         }
 
+        public async Task<IEnumerable<MateriaDTO>> GetByCarrera(int carreraId)
+        {
+            var materias = await _context.Materias.Where(m => m.CarreraId == carreraId).ToListAsync();
+            return _mapper.Map<IEnumerable<MateriaDTO>>(materias);
+        }
+
         public async Task Insert(MateriaDTO materiaDTO)
         {
             Materia materia = _mapper.Map<Materia>(materiaDTO);

@@ -1,47 +1,46 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
-using WebApiTupac.Entities.DTO;
 
 namespace WebApiTupac.Data
 {
     public class CarreraRepository : ICarreraRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public CarreraRepository(ApplicationDbContext context, IMapper mapper)
+        public CarreraRepository(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CarreraDTO>> GetAll()
+        public async Task<IEnumerable<Carrera>> GetAll()
         {
-            var carreras = await _context.Carreras.ToListAsync();
-            return _mapper.Map<IEnumerable<CarreraDTO>>(carreras);
+            var carreras = await _context.Carreras.Include(c => c.Materias).ToListAsync();
+            //return _mapper.Map<IEnumerable<CarreraDTO>>(carreras);
+            return carreras;
         }
 
-        public async Task<CarreraDTO> GetById(int id)
+        public async Task<Carrera> GetById(int id)
         {
             var carrera = await _context.Carreras.FindAsync(id);
-            return _mapper.Map<CarreraDTO>(carrera);
+            return carrera;
         }
 
-        public async Task Insert(CarreraDTO carreraDTO)
+        public async Task Insert(Carrera carrera)
         {
-            Carrera carrera = _mapper.Map<Carrera>(carreraDTO);
+
+            //Carrera carrera = _mapper.Map<Carrera>(carreraDTO);
+
             _context.Carreras.Add(carrera);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(int id, CarreraDTO carreraDTO)
+        public async Task Update(int id, Carrera carrera)
         {
             var existe = await _context.Carreras.AnyAsync(x => x.CarreraId == id);
             if (existe)
             {
-                _context.Update(carreraDTO);
+                _context.Update(carrera);
                 await _context.SaveChangesAsync();
             }
             else
