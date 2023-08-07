@@ -26,7 +26,8 @@ namespace WebApiTupac.Controllers
             {
                 return NotFound("La carrera no se ha encontrado");
             }
-            return Ok(carrera);
+            var carreraDTO = _mapper.Map<Carrera>(carrera);
+            return Ok(carreraDTO);
         }
 
         [HttpGet]

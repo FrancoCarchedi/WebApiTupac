@@ -1,52 +1,47 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
-using WebApiTupac.Entities.DTO;
 
 namespace WebApiTupac.Data
 {
     public class MateriaRepository : IMateriaRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        public MateriaRepository(ApplicationDbContext context, IMapper mapper)
+        public MateriaRepository(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MateriaDTO>> GetAll()
+        public async Task<IEnumerable<Materia>> GetAll()
         {
             var materias = await _context.Materias.ToListAsync();
-            return _mapper.Map<IEnumerable<MateriaDTO>>(materias);
+            return materias;
         }
 
-        public async Task<MateriaDTO> GetById(int id)
+        public async Task<Materia> GetById(int id)
         {
             var materia = await _context.Materias.FindAsync(id);
-            return _mapper.Map<MateriaDTO>(materia);
+            return materia;
         }
 
-        public async Task<IEnumerable<MateriaDTO>> GetByCarrera(int carreraId)
+        public async Task<IEnumerable<Materia>> GetByCarrera(int carreraId)
         {
             var materias = await _context.Materias.Where(m => m.CarreraId == carreraId).ToListAsync();
-            return _mapper.Map<IEnumerable<MateriaDTO>>(materias);
+            return materias;
         }
 
-        public async Task Insert(MateriaDTO materiaDTO)
+        public async Task Insert(Materia materia)
         {
-            Materia materia = _mapper.Map<Materia>(materiaDTO);
             _context.Materias.Add(materia);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(int id, MateriaDTO materiaDTO)
+        public async Task Update(int id, Materia materia)
         {
             var existe = await _context.Materias.AnyAsync(x => x.MateriaId == id);
             if (existe)
             {
-                _context.Update(materiaDTO);
+                _context.Update(materia);
                 await _context.SaveChangesAsync();
             }
             else

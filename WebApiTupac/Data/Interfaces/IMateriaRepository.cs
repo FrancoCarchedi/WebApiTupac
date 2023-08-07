@@ -1,9 +1,9 @@
-﻿using WebApiTupac.Entities.DTO;
+﻿using WebApiTupac.Entities;
 
 namespace WebApiTupac.Data.Interfaces
 {
-    public interface IMateriaRepository : IRepository<MateriaDTO>
+    public interface IMateriaRepository : IRepository<Materia>
     {
-        Task<IEnumerable<MateriaDTO>> GetByCarrera(int carreraId);
+        Task<IEnumerable<Materia>> GetByCarrera(int carreraId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
 using WebApiTupac.Entities.DTO;
@@ -9,37 +8,34 @@ namespace WebApiTupac.Data
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public UsuarioRepository(ApplicationDbContext context, IMapper mapper)
+        public UsuarioRepository(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UsuarioDTO>> GetAll()
+        public async Task<IEnumerable<Usuario>> GetAll()
         {
             var usuarios = await _context.Usuarios.ToListAsync();
-            return _mapper.Map<IEnumerable<UsuarioDTO>>(usuarios);
+            return usuarios;
         }
-        public async Task<UsuarioDTO> GetById(int id)
+        public async Task<Usuario> GetById(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
-            return _mapper.Map<UsuarioDTO>(usuario);
+            return usuario;
         }
-        public async Task Insert(UsuarioDTO usuarioDTO)
+        public async Task Insert(Usuario usuario)
         {
-            Usuario usuario = _mapper.Map<Usuario>(usuarioDTO);
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(int id, UsuarioDTO usuarioDTO)
+        public async Task Update(int id, Usuario usuario)
         {
             var existe = await _context.Usuarios.AnyAsync(x => x.UsuarioId == id);
             if (existe)
             {
-                _context.Update(usuarioDTO);
+                _context.Update(usuario);
                 await _context.SaveChangesAsync();
             }
             else
@@ -66,7 +62,7 @@ namespace WebApiTupac.Data
             }
             else
             {
-                throw new Exception("El usuario no existe.");
+                throw new Exception("El usuario ingresado no es correcto.");
             }
         }
     }

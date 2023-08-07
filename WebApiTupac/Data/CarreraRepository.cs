@@ -16,21 +16,17 @@ namespace WebApiTupac.Data
         public async Task<IEnumerable<Carrera>> GetAll()
         {
             var carreras = await _context.Carreras.Include(c => c.Materias).ToListAsync();
-            //return _mapper.Map<IEnumerable<CarreraDTO>>(carreras);
             return carreras;
         }
 
         public async Task<Carrera> GetById(int id)
         {
-            var carrera = await _context.Carreras.FindAsync(id);
+            var carrera = await _context.Carreras.Include(c => c.Materias).FirstOrDefaultAsync(c => c.CarreraId == id);
             return carrera;
         }
 
         public async Task Insert(Carrera carrera)
         {
-
-            //Carrera carrera = _mapper.Map<Carrera>(carreraDTO);
-
             _context.Carreras.Add(carrera);
             await _context.SaveChangesAsync();
         }

@@ -12,6 +12,7 @@ namespace WebApiTupac.Entities.Utilities
             CreateMap<CarreraDTO, Carrera>().ReverseMap();
             CreateMap<CarreraCreacionDTO, Carrera>();
             CreateMap<MateriaDTO, Materia>().ReverseMap();
+            CreateMap<MateriaCreacionDTO, Materia>();
         }
     }
 }
