@@ -1,18 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebApiTupac.Entities.DTO
 {
-    public class UsuarioDTO
+    public class UsuarioActualizacionDTO
     {
-        public int UsuarioId { get; set; }
+        
+        [StringLength(50)]
         public string Nombre { get; set; }
+        [StringLength(50)]
         public string Apellido { get; set; }
+        [StringLength(50)]
         public string NombreUsuario { get; set; }
         [PasswordPropertyText]
         public string Contrasena { get; set; }
         [EmailAddress]
         public string Email { get; set; }
-        public ICollection<Cursada> Cursadas { get; set; }
     }
 }

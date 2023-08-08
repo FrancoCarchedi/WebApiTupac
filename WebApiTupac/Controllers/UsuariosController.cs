@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
 using WebApiTupac.Entities.DTO;
@@ -10,45 +11,59 @@ namespace WebApiTupac.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioRepository _usuariosRepository;
-        public UsuariosController(IUsuarioRepository usuariosRepository)
+        private readonly IMapper _mapper;
+        public UsuariosController(IUsuarioRepository usuariosRepository, IMapper mapper)
         {
             _usuariosRepository = usuariosRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Usuario>> GetById(int id)
+        public async Task<ActionResult<UsuarioDTO>> GetById(int id)
         {
             var usuario = await _usuariosRepository.GetById(id);
             if (usuario == null)
             {
                 return NotFound("El usuario no se ha encontrado");
             }
-            return Ok(usuario);
+            var usuarioDTO = _mapper.Map<UsuarioDTO>(usuario);
+            return Ok(usuarioDTO);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> Get()
+        public async Task<ActionResult<List<UsuariosDTO>>> Get()
         {
             var usuarios = await _usuariosRepository.GetAll();
-            return Ok(usuarios);
+            var usuariosDTO = _mapper.Map<IEnumerable<UsuariosDTO>>(usuarios);
+            return Ok(usuariosDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert([FromBody] UsuarioDTO usuarioDTO)
+        public async Task<ActionResult> Insert([FromBody] UsuarioCreacionDTO usuarioCreacionDTO)
         {
-            await _usuariosRepository.Insert(usuarioDTO);
+            var usuario = _mapper.Map<Usuario>(usuarioCreacionDTO);
+            await _usuariosRepository.Insert(usuario);
             return Ok("El usuario se ha insertado correctamente.");
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int usuarioId, UsuarioDTO usuario)
+        public async Task<ActionResult> Update(int id, UsuarioActualizacionDTO usuarioActualizacionDTO)
         {
-            var existe = await _usuariosRepository.GetById(usuarioId);
-            if (existe == null)
+            var usuario = await _usuariosRepository.GetById(id);
+            if (usuario == null)
             {
                 return NotFound("El usuario a editar no se encuentra");
             }
-            await _usuariosRepository.Update(usuarioId, usuario);
+
+            //usuario.Nombre = usuarioActualizacionDTO.Nombre ?? usuario.Nombre;
+            //usuario.Apellido = usuarioActualizacionDTO.Apellido ?? usuario.Apellido;
+            //usuario.NombreUsuario = usuarioActualizacionDTO.NombreUsuario ?? usuario.NombreUsuario;
+            //usuario.Contrasena = usuarioActualizacionDTO.Contrasena ?? usuario.Contrasena;
+            //usuario.Email = usuarioActualizacionDTO.Email ?? usuario.Email;
+
+            _mapper.Map(usuarioActualizacionDTO, usuario);
+
+            await _usuariosRepository.Update(usuario.UsuarioId, usuario);
             return Ok("Se han actualizado los datos del usuario");
         }
 
