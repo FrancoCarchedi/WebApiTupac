@@ -5,6 +5,7 @@ namespace WebApiTupac.Data.Interfaces
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
+        Task<bool> UsuarioExists(int usuarioId);
         Task ResetPassword(string username, string newPasword);
     }
 }

@@ -10,15 +10,11 @@
         "projectUniqueName": "C:\\Desarrollo\\WebApiTupac\\WebApiTupac\\WebApiTupac.csproj",
         "projectName": "WebApiTupac",
         "projectPath": "C:\\Desarrollo\\WebApiTupac\\WebApiTupac\\WebApiTupac.csproj",
-        "packagesPath": "C:\\Users\\Franco Carchedi\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\franco.carchedi\\.nuget\\packages\\",
         "outputPath": "C:\\Desarrollo\\WebApiTupac\\WebApiTupac\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Franco Carchedi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\franco.carchedi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },

@@ -23,6 +23,10 @@ namespace WebApiTupac.Data
             var materia = await _context.Materias.FindAsync(id);
             return materia;
         }
+        public async Task<bool> MateriaExists(int materiaId)
+        {
+            return await _context.Materias.AnyAsync(m => m.MateriaId == materiaId);
+        }
 
         public async Task<IEnumerable<Materia>> GetByCarrera(int carreraId)
         {

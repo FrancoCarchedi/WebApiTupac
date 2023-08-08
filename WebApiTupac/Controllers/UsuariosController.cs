@@ -55,12 +55,6 @@ namespace WebApiTupac.Controllers
                 return NotFound("El usuario a editar no se encuentra");
             }
 
-            //usuario.Nombre = usuarioActualizacionDTO.Nombre ?? usuario.Nombre;
-            //usuario.Apellido = usuarioActualizacionDTO.Apellido ?? usuario.Apellido;
-            //usuario.NombreUsuario = usuarioActualizacionDTO.NombreUsuario ?? usuario.NombreUsuario;
-            //usuario.Contrasena = usuarioActualizacionDTO.Contrasena ?? usuario.Contrasena;
-            //usuario.Email = usuarioActualizacionDTO.Email ?? usuario.Email;
-
             _mapper.Map(usuarioActualizacionDTO, usuario);
 
             await _usuariosRepository.Update(usuario.UsuarioId, usuario);

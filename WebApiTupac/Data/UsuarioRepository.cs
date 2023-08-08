@@ -24,6 +24,10 @@ namespace WebApiTupac.Data
             var usuario = await _context.Usuarios.FindAsync(id);
             return usuario;
         }
+        public async Task<bool> UsuarioExists(int usuarioId)
+        {
+            return await _context.Usuarios.AnyAsync(u => u.UsuarioId == usuarioId);
+        }
         public async Task Insert(Usuario usuario)
         {
             _context.Usuarios.Add(usuario);

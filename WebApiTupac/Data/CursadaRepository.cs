@@ -1,32 +1,62 @@
-﻿using WebApiTupac.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApiTupac.Data.Interfaces;
 using WebApiTupac.Entities;
 
 namespace WebApiTupac.Data
 {
     public class CursadaRepository : ICursadaRepository
     {
-        public Task<Cursada> GetById(int id)
+        private readonly ApplicationDbContext _context;
+        public CursadaRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<Cursada>> GetAll()
+        public async Task<IEnumerable<Cursada>> GetAll()
         {
-            throw new NotImplementedException();
+            var cursadas = await _context.Cursadas.ToListAsync();
+            return cursadas;
+        }
+        public async Task<IEnumerable<Cursada>> GetAllByUsuario(int UsuarioId)
+        {
+            var cursadasByUsuario = await _context.Cursadas.Where(u => u.UsuarioId == UsuarioId).Include(u => u.Usuario).Include(m => m.Materia).ToListAsync();
+            return cursadasByUsuario;
+        }
+        public async Task<Cursada> GetById(int id)
+        {
+            var cursada = await _context.Cursadas.Include(u => u.Usuario).Include(m => m.Materia).FirstOrDefaultAsync(c => c.CursadaId == id);
+            return cursada;
         }
 
-        public Task Insert(Cursada entity)
+        public async Task<bool> CursadaExists(int usuarioId, int materiaId)
         {
-            throw new NotImplementedException();
+            return await _context.Cursadas.AnyAsync(c => c.UsuarioId == usuarioId && c.MateriaId == materiaId);
         }
 
-        public Task Update(int id, Cursada entity)
+        public async Task Insert(Cursada cursada)
         {
-            throw new NotImplementedException();
+            _context.Cursadas.Add(cursada);
+            await _context.SaveChangesAsync();
         }
-        public Task DeleteById(int id)
+
+        public async Task Update(int id, Cursada cursada)
         {
-            throw new NotImplementedException();
+            var existe = await _context.Cursadas.AnyAsync(x => x.CursadaId == id);
+            if (existe)
+            {
+                _context.Update(cursada);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("La cursada no existe.");
+            }
+        }
+        public async Task DeleteById(int id)
+        {
+            Cursada cursada = await _context.Cursadas.FindAsync(id);
+            _context.Cursadas.Remove(cursada);
+            await _context.SaveChangesAsync();
         }
     }
 }

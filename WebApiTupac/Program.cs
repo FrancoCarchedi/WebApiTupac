@@ -12,10 +12,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
 builder.Services.AddScoped(typeof(ICarreraRepository), typeof(CarreraRepository));
 builder.Services.AddScoped(typeof(IMateriaRepository), typeof(MateriaRepository));
-//builder.Services.AddScoped(typeof(ICursadaRepository), typeof(CursadaRepository));
+builder.Services.AddScoped(typeof(ICursadaRepository), typeof(CursadaRepository));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -25,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
 app.UseHttpsRedirection();
 
 app.UseRouting();
