@@ -15,9 +15,6 @@ namespace WebApiTupac.Entities.DTO
         [StringLength(50)]
         public string NombreUsuario { get; set; }
         [Required]
-        [PasswordPropertyText]
-        public string Contrasena { get; set; }
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
     }

@@ -17,7 +17,6 @@ namespace WebApiTupac.Entities
         [Required]
         [StringLength(50)]
         public string NombreUsuario { get; set; }
-        [Required]
         [PasswordPropertyText]
         public string Contrasena { get; set; }
         [Required]
