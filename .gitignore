@@ -1,0 +1,33 @@
+# Exclude Visual Studio temporary files, build results, and
+# build directories.
+.vs/
+*.user
+*.suo
+*.dbmdl
+*.log
+
+# Exclude bin and obj folders
+bin/
+obj/
+
+# Exclude build results
+*.dll
+*.exe
+*.app
+*.log
+*.pdb
+*.cache
+*.ilk
+*.idb
+*.map
+*.pch
+*.obj
+*.tmp
+*.sbr
+*.tlb
+*.tlh
+*.bak
+*.swp
+
+# Exclude publish directory
+publish/
