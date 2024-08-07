@@ -33,6 +33,18 @@ namespace WebApiTupac.Controllers
             return Ok(carrera);
         }
 
+        [HttpGet("slug/{slug}")]
+        public async Task<ActionResult<CarreraDTO>> GetBySlug(string slug)
+        {
+            var carrera = await _carrerasRepository.GetBySlug(slug);
+            if (carrera == null)
+            {
+                return NotFound("La carrera no se ha encontrado");
+            }
+            //var carreraDTO = _mapper.Map<Carrera>(carrera);
+            return Ok(carrera);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<CarreraDTO>>> Get()
         {
@@ -61,8 +73,8 @@ namespace WebApiTupac.Controllers
             return Ok("La carrera se ha insertado correctamente.");
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(CarreraCreacionDTO carreraDTO, string id)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Update([FromForm] CarreraActualizacionDTO carreraDTO, string id)
         {
             var existe = await _carrerasRepository.GetById(id);
             if (existe == null)
@@ -70,8 +82,9 @@ namespace WebApiTupac.Controllers
                 return NotFound("La carrera a editar no se encuentra");
             }
 
-            existe.Nombre = carreraDTO.Nombre;
-            existe.Duracion = carreraDTO.Duracion;
+            //existe.Nombre = carreraDTO.Nombre;
+            //existe.Duracion = carreraDTO.Duracion;
+            _mapper.Map(carreraDTO, existe);
 
             await _carrerasRepository.Update(id, existe);
             return Ok("Se han actualizado los datos de la carrera");

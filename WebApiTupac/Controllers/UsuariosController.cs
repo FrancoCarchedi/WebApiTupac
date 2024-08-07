@@ -63,7 +63,7 @@ namespace WebApiTupac.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult> Update(string id, UsuarioActualizacionDTO usuarioActualizacionDTO)
+        public async Task<ActionResult> Update(string id, [FromForm] UsuarioActualizacionDTO usuarioActualizacionDTO, [FromForm] IFormFile file)
         {
             var usuario = await _usuariosRepository.GetById(id);
             if (usuario == null)
@@ -72,6 +72,11 @@ namespace WebApiTupac.Controllers
             }
 
             _mapper.Map(usuarioActualizacionDTO, usuario);
+            if (file != null && file.Length > 0)
+            {
+                var imageUrl = await _cloudinaryService.UploadImageAsync(file);
+                usuario.Foto = imageUrl;
+            }
 
             await _usuariosRepository.Update(usuario.Id, usuario);
             return Ok("Se han actualizado los datos del usuario");
@@ -87,8 +92,15 @@ namespace WebApiTupac.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
-            await _usuariosRepository.DeleteById(id);
-            return Ok("El usuario se eliminó correctamente");
+            try
+            {
+                await _usuariosRepository.DeleteById(id);
+                return Ok("El usuario se eliminó correctamente");
+            }
+            catch (Exception ex) {
+                throw new Exception($"Ocurrió un error al eliminar el usuario: {ex.Message}");
+            }
+            
         }
     }
 }

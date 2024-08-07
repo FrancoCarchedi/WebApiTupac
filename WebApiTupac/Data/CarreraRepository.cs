@@ -26,6 +26,12 @@ namespace WebApiTupac.Data
             return carrera;
         }
 
+        public async Task<Carrera> GetBySlug(string slug)
+        {
+            var carrera = await _context.Carreras.Include(c => c.Materias).FirstOrDefaultAsync(c => c.Slug == slug);
+            return carrera;
+        }
+
         public async Task Insert(Carrera carrera)
         {
             carrera.Slug = SlugHelper.GenerateSlug(carrera.Nombre);

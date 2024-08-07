@@ -5,6 +5,6 @@ namespace WebApiTupac.Data.Interfaces
 {
     public interface ICarreraRepository : IRepository<Carrera>
     {
-
+        Task<Carrera> GetBySlug(string slug);
     }
 }
