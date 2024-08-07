@@ -21,6 +21,6 @@ namespace WebApiTupac.Entities.DTO
         public string Foto { get; set; }
         [Required]
         [MinLength(1)]
-        public string[] Roles { get; set; }
+        public string Roles { get; set; }
     }
 }

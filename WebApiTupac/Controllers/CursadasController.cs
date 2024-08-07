@@ -55,6 +55,18 @@ namespace WebApiTupac.Controllers
             return Ok(cursadas);
         }
 
+        [HttpGet("/api/cursadas/docente/{docenteId}")]
+        public async Task<ActionResult<Cursada>> GetByDocente(string docenteId)
+        {
+            var cursadas = await _cursadaRepository.GetAllByDocente(docenteId);
+            if (cursadas == null)
+            {
+                return NotFound("El usuario no existe");
+            }
+
+            return Ok(cursadas);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Insert([FromForm] CursadaCreacionDTO cursadaCreacionDTO)
         {
@@ -84,7 +96,7 @@ namespace WebApiTupac.Controllers
 
         [HttpPatch("{id}")]
         //Solo se podra modificar la calificacion, de esta forma se aprobara o desaprobara la cursada
-        [Authorize(Roles = "Docente,Administrador")]
+        //[Authorize(Roles = "Docente,Administrador")]
         public async Task<ActionResult> Update([FromForm] CursadaActualizacionDTO cursadaActualizacionDTO, string id)
         {
             var cursada = await _cursadaRepository.GetById(id);
@@ -92,6 +104,8 @@ namespace WebApiTupac.Controllers
             {
                 return BadRequest("La cursada solicitada no existe");
             }
+
+            cursada.Aprobada = cursadaActualizacionDTO.Calificacion >= 4;
 
             _mapper.Map(cursadaActualizacionDTO, cursada);
             await _cursadaRepository.Update(cursada.CursadaId.ToString(), cursada);

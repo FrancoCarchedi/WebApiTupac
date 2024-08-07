@@ -82,8 +82,6 @@ namespace WebApiTupac.Controllers
                 return NotFound("La carrera a editar no se encuentra");
             }
 
-            //existe.Nombre = carreraDTO.Nombre;
-            //existe.Duracion = carreraDTO.Duracion;
             _mapper.Map(carreraDTO, existe);
 
             await _carrerasRepository.Update(id, existe);

@@ -14,13 +14,16 @@ namespace WebApiTupac.Data
 
         public async Task<IEnumerable<Materia>> GetAll()
         {
-            var materias = await _context.Materias.ToListAsync();
+            var materias = await _context.Materias.Include(c => c.Carrera).ToListAsync();
             return materias;
         }
 
         public async Task<Materia> GetById(string id)
         {
-            var materia = await _context.Materias.FirstOrDefaultAsync(m => m.MateriaId.ToString() == id);
+            var materia = await _context.Materias
+                .Include(c => c.Carrera)
+                .FirstOrDefaultAsync(m => m.MateriaId.ToString() == id);
+
             return materia;
         }
         public async Task<bool> MateriaExists(string materiaId)

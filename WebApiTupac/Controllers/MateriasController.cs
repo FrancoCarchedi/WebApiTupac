@@ -21,27 +21,27 @@ namespace WebApiTupac.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<MateriaDTO>> GetById(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Materia>> GetById(string id)
         {
             var materia = await _materiasRepository.GetById(id);
             if (materia == null)
             {
                 return NotFound("La materia no se ha encontrado.");
             }
-            var materiaDTO = _mapper.Map<MateriaDTO>(materia);
+            var materiaDTO = _mapper.Map<Materia>(materia);
             return Ok(materiaDTO);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MateriaDTO>>> Get()
+        public async Task<ActionResult<List<Materia>>> Get()
         {
             var materias = await _materiasRepository.GetAll();
             var materiasDTO = _mapper.Map<IEnumerable<MateriaDTO>>(materias);
-            return Ok(materiasDTO);
+            return Ok(materias);
         }
 
-        [HttpGet("/api/carreras/{carreraId:int}/materias")]
+        [HttpGet("/api/carreras/{carreraId}/materias")]
         public async Task<ActionResult<List<MateriaDTO>>> GetByCarrera(string carreraId)
         {
             var materias = await _materiasRepository.GetByCarrera(carreraId);
@@ -67,29 +67,23 @@ namespace WebApiTupac.Controllers
             return Ok("La materia se ha insertado correctamente.");
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update([FromBody] MateriaCreacionDTO materiaCreacionDTO, string id)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Update([FromForm] MateriaActualizacionDTO materiaActualizacionDTO, string id)
         {
-            var materia = await _materiasRepository.GetById(id);
 
-            if (materia == null)
+            var existe = await _materiasRepository.GetById(id);
+            if (existe == null)
             {
-                return NotFound("La materia a editar no se encuentra.");
+                return NotFound("La materia a editar no se encuentra");
             }
 
-            if (materiaCreacionDTO.CarreraId == materia.CarreraId.ToString())
-            {
-                materia.Nombre = materiaCreacionDTO.Nombre;
-                materia.CarreraId = materia.CarreraId;
+            _mapper.Map(materiaActualizacionDTO, existe);
 
-                await _materiasRepository.Update(materiaCreacionDTO.CarreraId, materia);
-                return Ok("Se han actualizado los datos de la materia.");
-            }
-
-            return BadRequest("La carrera a la que hace referencia, no existe.");
+            await _materiasRepository.Update(id, existe);
+            return Ok("Se han actualizado los datos de la materia");
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
             var existe = await _materiasRepository.GetById(id);

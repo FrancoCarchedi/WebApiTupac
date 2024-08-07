@@ -57,7 +57,8 @@ namespace WebApiTupac.Controllers
             var usuario = _mapper.Map<Usuario>(usuarioCreacionDTO);
 
             await _userManager.CreateAsync(usuario, usuarioCreacionDTO.Password);
-            await _usuariosRepository.SetRoles(usuario, usuarioCreacionDTO.Roles);
+            var roles = usuarioCreacionDTO.Roles.Split(',');
+            await _usuariosRepository.SetRoles(usuario, roles);
 
             return Ok("El usuario se ha insertado correctamente.");
         }

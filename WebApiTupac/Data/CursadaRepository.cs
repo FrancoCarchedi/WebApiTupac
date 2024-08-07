@@ -23,8 +23,14 @@ namespace WebApiTupac.Data
         }
         public async Task<IEnumerable<Cursada>> GetAllByUsuario(string UsuarioId)
         {
-            var cursadasByUsuario = await _context.Cursadas.Where(u => u.UsuarioId == UsuarioId).Include(u => u.Usuario).Include(m => m.Materia).ToListAsync();
+            var cursadasByUsuario = await _context.Cursadas.Where(u => u.UsuarioId == UsuarioId).Include(u => u.Usuario).Include(u => u.Docente).Include(m => m.Materia).ToListAsync();
             return cursadasByUsuario;
+        }
+
+        public async Task<IEnumerable<Cursada>> GetAllByDocente(string docenteId)
+        {
+            var cursadasByDocente = await _context.Cursadas.Where(u => u.DocenteId == docenteId).Include(u => u.Docente).Include(u => u.Usuario).Include(m => m.Materia).ToListAsync();
+            return cursadasByDocente;
         }
         public async Task<Cursada> GetById(string id)
         {
